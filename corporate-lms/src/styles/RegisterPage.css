@@ -1,0 +1,26 @@
+.register-container {
+    text-align: center;
+    margin-top: 50px;
+    padding: 20px;
+}
+
+.register-container input,
+.register-container button {
+    width: 80%;
+    padding: 12px;
+    margin: 8px 0;
+    display: inline-block;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.register-container button {
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+.register-container button:hover {
+    background-color: #45a049;
+}
