@@ -13,6 +13,8 @@ const HomePage = () => {
             <Link to="/register">
                 <button className="register-button">Register</button>
             </Link>
+
+            <p>Use "User123@gmail.com" and "User1234" for a quick login </p>
         </div>
     );
 };

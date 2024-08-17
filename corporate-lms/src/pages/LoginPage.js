@@ -73,6 +73,7 @@ const LoginPage = () => {
             <p className="register-link">
                 New here? <Link to="/register">Please register</Link>
             </p>
+            <p>Use "User123@gmail.com" and "User1234" for a quick login </p>
         </div>
     );
 };

@@ -53,6 +53,7 @@ const RegisterPage = () => {
 
     return (
         <div className="register-container">
+            <p>For spam reasons, you will only be able to register as a student, <a href="mailto:victorishaya62@gmail.com">email me</a> to test more features</p>
             <h1>Register</h1>
             <input type="text" value={username} onChange={e => setUsername(e.target.value)} placeholder="Username" />
             <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
