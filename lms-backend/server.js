@@ -5,6 +5,7 @@ const http = require('http');
 const socketIo = require('socket.io');
 const cors = require('cors');
 const fs = require('fs');
+const path = require('path');
 
 const courseRoutes = require('./routes/courses');
 const userRoutes = require('./routes/users');
@@ -17,7 +18,7 @@ const app = express();
 const server = http.createServer(app);
 const io = socketIo(server, {
   cors: {
-    origin: "http://localhost:3000", // Your frontend URL
+    origin: "http://localhost:3000", // Your frontend URL (change this to your Vercel URL if necessary)
     methods: ["GET", "POST"]
   }
 });
@@ -36,8 +37,8 @@ app.use('/api/uploads', uploadRoutes); // Prefixing with '/api/uploads' for clar
 // Connect to MongoDB
 const dbURI = process.env.DB_URI;
 mongoose.connect(dbURI, {
-    serverSelectionTimeoutMS: 5000, // Timeout for initial connection to the MongoDB server
-    socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
+  serverSelectionTimeoutMS: 5000, // Timeout for initial connection to the MongoDB server
+  socketTimeoutMS: 45000, // Close sockets after 45 seconds of inactivity
 })
   .then(() => console.log('MongoDB connected successfully'))
   .catch(err => console.error('MongoDB connection error:', err));
@@ -47,6 +48,9 @@ const dir = './uploads';
 if (!fs.existsSync(dir)){
     fs.mkdirSync(dir);
 }
+
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, 'corporate-lms/build')));
 
 // Socket.IO for real-time communication
 io.on('connection', (socket) => {
@@ -83,7 +87,10 @@ io.on('connection', (socket) => {
   });
 });
 
-
+// The "catchall" handler: for any request that doesn't match the above routes, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'corporate-lms/build', 'index.html'));
+});
 
 // Root Endpoint
 app.get('/', (req, res) => {
