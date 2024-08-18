@@ -9,7 +9,7 @@ const path = require('path');
 
 const courseRoutes = require('./routes/courses');
 const userRoutes = require('./routes/users');
-const messageRoutes = require('./routes/messages'); // Corrected from commentRoutes
+const messageRoutes = require('./routes/messages');
 const uploadRoutes = require('./routes/uploads');
 const authRoutes = require('./routes/auth');
 const Message = require('./models/message'); // Import the Message model
@@ -31,8 +31,8 @@ app.use(express.json());
 app.use('/auth', authRoutes);
 app.use('/api/courses', courseRoutes);
 app.use('/users', userRoutes);
-app.use('/api/messages', messageRoutes); // Corrected path
-app.use('/api/uploads', uploadRoutes); // Prefixing with '/api/uploads' for clarity
+app.use('/api/messages', messageRoutes);
+app.use('/api/uploads', uploadRoutes);
 
 // Connect to MongoDB
 const dbURI = process.env.DB_URI;
@@ -51,6 +51,11 @@ if (!fs.existsSync(dir)){
 
 // Serve static files from the React app
 app.use(express.static(path.join(__dirname, 'corporate-lms/build')));
+
+// The "catchall" handler: for any request that doesn't match the above routes, send back React's index.html file.
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'corporate-lms/build', 'index.html'));
+});
 
 // Socket.IO for real-time communication
 io.on('connection', (socket) => {
@@ -85,16 +90,6 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
       console.log('Client disconnected');
   });
-});
-
-// The "catchall" handler: for any request that doesn't match the above routes, send back React's index.html file.
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'corporate-lms/build', 'index.html'));
-});
-
-// Root Endpoint
-app.get('/', (req, res) => {
-  res.send('Connected to MongoDB Atlas!');
 });
 
 // Server listen

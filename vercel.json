@@ -13,7 +13,7 @@
     ],
     "routes": [
       { "src": "/api/(.*)", "dest": "lms-backend/server.js" },
-      { "src": "/(.*)", "dest": "/index.html" }
+      { "src": "/(.*)", "dest": "corporate-lms/build/index.html" }
     ]
   }
   
